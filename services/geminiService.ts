@@ -150,14 +150,14 @@ export const generateMarketingVideo = async (
   const downloadUrl = `${uri}${separator}key=${encodeURIComponent(apiKey)}`;
 
   // Fetch the actual video content
-  // This is required because the raw link needs the key and direct browser playback might have auth issues
-  // or issues with the key parameter if not strictly handled. Fetching as blob is most robust.
   const response = await fetch(downloadUrl);
   if (!response.ok) {
     throw new Error(`Failed to download video: ${response.status} ${response.statusText}`);
   }
 
-  const blob = await response.blob();
+  const rawBlob = await response.blob();
+  // Force mime type to video/mp4 to ensure data URI is correct for playback
+  const blob = new Blob([rawBlob], { type: 'video/mp4' });
   
   // Convert Blob to Base64 Data URL so it plays immediately in the video tag
   return new Promise((resolve, reject) => {

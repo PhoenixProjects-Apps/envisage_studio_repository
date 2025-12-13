@@ -115,7 +115,8 @@ const ThreeDGenerator: React.FC<ThreeDGeneratorProps> = ({ onAssetCreated }) => 
                         controls 
                         autoPlay 
                         loop
-                        className="w-full h-full object-cover"
+                        playsInline
+                        className="w-full h-full object-contain"
                     />
                 ) : (
                     <div className="text-center text-zinc-600 p-8">
