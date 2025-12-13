@@ -173,3 +173,14 @@ export const generateMarketingVideo = async (
     reader.readAsDataURL(blob);
   });
 };
+
+// --- 3D Animation Generation ---
+export const generateThreeDAnimation = async (
+  prompt: string,
+  style: string
+): Promise<string> => {
+  // We use the video model but with specialized prompting for 3D styling
+  const fullPrompt = `Create a high-quality 3D animated video. Style: ${style}. Details: ${prompt}. The output must look like a professional 3D render from Unreal Engine 5 or Blender. Cinematic lighting, high fidelity texture.`;
+  
+  return generateMarketingVideo(fullPrompt, '16:9');
+};

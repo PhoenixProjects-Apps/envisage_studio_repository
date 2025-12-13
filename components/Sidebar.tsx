@@ -9,7 +9,8 @@ import {
   Layers,
   LogOut,
   ChevronLeft,
-  ChevronRight
+  ChevronRight,
+  Box
 } from 'lucide-react';
 
 interface SidebarProps {
@@ -64,6 +65,7 @@ const Sidebar: React.FC<SidebarProps> = ({ currentTool, setTool, user, onLogout 
     { type: ToolType.IMAGE_GEN, label: "Image Gen", icon: <ImageIcon size={20} /> },
     { type: ToolType.IMAGE_EDIT, label: "Image Edit", icon: <Wand2 size={20} /> },
     { type: ToolType.VIDEO_GEN, label: "Video Gen", icon: <Video size={20} /> },
+    { type: ToolType.THREE_D_GEN, label: "3D Animated", icon: <Box size={20} /> },
     { type: ToolType.LAYOUT_EDITOR, label: "Layout Editor", icon: <Layers size={20} /> },
   ];
 

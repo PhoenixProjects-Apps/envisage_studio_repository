@@ -24,12 +24,13 @@ const VideoGenerator: React.FC<VideoGeneratorProps> = ({ onAssetCreated }) => {
     const checkKey = async () => {
       // Access via any to avoid type conflicts with global AIStudio definition
       const aistudio = (window as any).aistudio;
-      if (aistudio?.hasSelectedApiKey) {
+      if (aistudio && aistudio.hasSelectedApiKey) {
         const has = await aistudio.hasSelectedApiKey();
         setHasKey(has);
       } else {
-        // Fallback for dev environments without the specific wrapper
-        setHasKey(false);
+        // Fallback for standard hosting environments using env vars
+        // If window.aistudio is missing, we assume the developer has set process.env.API_KEY correctly.
+        setHasKey(true);
       }
       setCheckingKey(false);
     };
@@ -83,8 +84,13 @@ const VideoGenerator: React.FC<VideoGeneratorProps> = ({ onAssetCreated }) => {
     } catch (e: any) {
       console.error(e);
       if (e.message && e.message.includes("Requested entity was not found")) {
-        setHasKey(false); // Reset key state to force re-selection
-        alert("Session expired or key invalid. Please select your API Key again.");
+        // Only force re-selection if we are in an environment that supports it
+        if ((window as any).aistudio) {
+            setHasKey(false); 
+            alert("Session expired or key invalid. Please select your API Key again.");
+        } else {
+            alert("API Error: Please check your API_KEY environment variable.");
+        }
       } else {
         alert("Video generation failed. It can take a few minutes.");
       }

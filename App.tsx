@@ -6,6 +6,7 @@ import CopyGenerator from './components/CopyGenerator';
 import ImageGenerator from './components/ImageGenerator';
 import ImageEditor from './components/ImageEditor';
 import VideoGenerator from './components/VideoGenerator';
+import ThreeDGenerator from './components/ThreeDGenerator';
 import LoginScreen from './components/LoginScreen';
 
 const App: React.FC = () => {
@@ -63,6 +64,8 @@ const App: React.FC = () => {
         return <ImageEditor onAssetCreated={handleAssetCreated} />;
       case ToolType.VIDEO_GEN:
         return <VideoGenerator onAssetCreated={handleAssetCreated} />;
+      case ToolType.THREE_D_GEN:
+        return <ThreeDGenerator onAssetCreated={handleAssetCreated} />;
       case ToolType.DASHBOARD:
       default:
         return (
@@ -88,6 +91,12 @@ const App: React.FC = () => {
                     desc="Produce marketing clips with Veo 3."
                     onClick={() => setCurrentTool(ToolType.VIDEO_GEN)}
                     color="from-pink-500 to-rose-600"
+                />
+                 <DashboardCard 
+                    title="3D Animated" 
+                    desc="Generate 3D motion graphics and product loops."
+                    onClick={() => setCurrentTool(ToolType.THREE_D_GEN)}
+                    color="from-orange-500 to-red-600"
                 />
                 <DashboardCard 
                     title="Write Copy" 

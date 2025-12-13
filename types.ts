@@ -11,6 +11,7 @@ export enum ToolType {
   IMAGE_GEN = "image_gen",
   IMAGE_EDIT = "image_edit",
   VIDEO_GEN = "video_gen",
+  THREE_D_GEN = "three_d_gen",
   COPY_WRITER = "copy_writer",
   LAYOUT_EDITOR = "layout_editor"
 }
