@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react?external=react';
 import Sidebar from './components/Sidebar';
 import { ToolType, GeneratedAsset, User } from './types';
 import LayoutEditor from './components/LayoutEditor';
