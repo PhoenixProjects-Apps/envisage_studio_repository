@@ -1,0 +1,21 @@
+{
+  "short_name": "Envisage",
+  "name": "Envisage Studio",
+  "icons": [
+    {
+      "src": "https://placehold.co/192x192/2dd4bf/ffffff?text=ES",
+      "type": "image/png",
+      "sizes": "192x192"
+    },
+    {
+      "src": "https://placehold.co/512x512/2dd4bf/ffffff?text=ES",
+      "type": "image/png",
+      "sizes": "512x512"
+    }
+  ],
+  "start_url": ".",
+  "display": "standalone",
+  "theme_color": "#09090b",
+  "background_color": "#09090b",
+  "orientation": "portrait"
+}

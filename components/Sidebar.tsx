@@ -10,7 +10,8 @@ import {
   LogOut,
   ChevronLeft,
   ChevronRight,
-  Box
+  Box,
+  Hexagon
 } from 'lucide-react';
 
 interface SidebarProps {
@@ -22,18 +23,31 @@ interface SidebarProps {
 
 const Sidebar: React.FC<SidebarProps> = ({ currentTool, setTool, user, onLogout }) => {
   const [isCollapsed, setIsCollapsed] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
   const sidebarRef = useRef<HTMLDivElement>(null);
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   // Initialize state based on screen size
   useEffect(() => {
-    if (window.innerWidth < 768) {
-      setIsCollapsed(true);
-    }
+    const handleResize = () => {
+      const mobile = window.innerWidth < 768;
+      setIsMobile(mobile);
+      if (mobile) {
+        setIsCollapsed(true);
+      }
+    };
+    
+    // Initial check
+    handleResize();
+
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
   }, []);
 
   // Auto-dock logic: Collapse after 3 seconds of inactivity (mouse leave)
+  // DISABLED ON MOBILE to prevent erratic behavior on touch
   const handleMouseEnter = () => {
+    if (isMobile) return;
     if (timerRef.current) {
       clearTimeout(timerRef.current);
       timerRef.current = null;
@@ -41,11 +55,12 @@ const Sidebar: React.FC<SidebarProps> = ({ currentTool, setTool, user, onLogout 
   };
 
   const handleMouseLeave = () => {
+    if (isMobile) return;
     // Only auto-dock if currently expanded
     if (!isCollapsed) {
       timerRef.current = setTimeout(() => {
         setIsCollapsed(true);
-      }, 4000); // 4 seconds delay before auto-docking
+      }, 4000); 
     }
   };
 
@@ -54,7 +69,6 @@ const Sidebar: React.FC<SidebarProps> = ({ currentTool, setTool, user, onLogout 
     const newState = !isCollapsed;
     setIsCollapsed(newState);
     if (!newState) {
-      // If manually opening, clear any pending auto-close timers immediately
       if (timerRef.current) clearTimeout(timerRef.current);
     }
   };
@@ -85,19 +99,17 @@ const Sidebar: React.FC<SidebarProps> = ({ currentTool, setTool, user, onLogout 
       </button>
 
       <div className={`p-6 ${isCollapsed ? 'items-center px-0' : ''} flex flex-col`}>
-        <div className={`flex items-center ${isCollapsed ? 'justify-center' : 'gap-2'}`}>
-           <img 
-            src="https://placehold.co/40x40/2dd4bf/ffffff?text=ES" 
-            alt="Envisage Studio" 
-            className="w-8 h-8 rounded-lg shrink-0"
-           />
+        <div className={`flex items-center ${isCollapsed ? 'justify-center' : 'gap-3'}`}>
+           <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-teal-500 to-indigo-600 flex items-center justify-center shrink-0 shadow-lg shadow-indigo-500/20">
+              <Hexagon className="text-white" size={18} fill="currentColor" fillOpacity={0.2} />
+           </div>
            {!isCollapsed && (
              <h1 className="text-xl font-bold bg-gradient-to-r from-teal-400 to-indigo-400 bg-clip-text text-transparent whitespace-nowrap overflow-hidden">
               Envisage
              </h1>
            )}
         </div>
-        {!isCollapsed && <p className="text-xs text-zinc-500 mt-1 pl-10 whitespace-nowrap overflow-hidden transition-opacity duration-300">Branding Assistant</p>}
+        {!isCollapsed && <p className="text-xs text-zinc-500 mt-1 pl-11 whitespace-nowrap overflow-hidden transition-opacity duration-300">Branding Assistant</p>}
       </div>
       
       <nav className="flex-1 px-3 space-y-2 overflow-y-auto overflow-x-hidden no-scrollbar">
@@ -119,8 +131,8 @@ const Sidebar: React.FC<SidebarProps> = ({ currentTool, setTool, user, onLogout 
               </span>
             )}
             
-            {/* Tooltip for collapsed mode */}
-            {isCollapsed && (
+            {/* Tooltip for collapsed mode (Only on Desktop) */}
+            {isCollapsed && !isMobile && (
                 <div className="absolute left-full ml-2 px-2 py-1 bg-zinc-800 border border-zinc-700 rounded text-xs text-white opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-50 whitespace-nowrap">
                     {item.label}
                 </div>
@@ -135,18 +147,18 @@ const Sidebar: React.FC<SidebarProps> = ({ currentTool, setTool, user, onLogout 
             <div className="bg-zinc-800/50 rounded-lg p-3 text-xs text-zinc-500 mb-4 whitespace-nowrap overflow-hidden">
               <p className="font-semibold text-zinc-400 mb-1">System Status</p>
               <div className="flex items-center gap-2">
-                <span className="w-2 h-2 rounded-full bg-green-500"></span>
+                <span className="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span>
                 Gemini 2.5 Active
               </div>
               <div className="flex items-center gap-2 mt-1">
-                <span className="w-2 h-2 rounded-full bg-blue-500"></span>
+                <span className="w-2 h-2 rounded-full bg-blue-500 animate-pulse"></span>
                 Veo 3.1 Active
               </div>
             </div>
          ) : (
              <div className="flex flex-col items-center gap-2 mb-4">
-                 <span className="w-2 h-2 rounded-full bg-green-500" title="Gemini Active"></span>
-                 <span className="w-2 h-2 rounded-full bg-blue-500" title="Veo Active"></span>
+                 <span className="w-2 h-2 rounded-full bg-green-500 animate-pulse" title="Gemini Active"></span>
+                 <span className="w-2 h-2 rounded-full bg-blue-500 animate-pulse" title="Veo Active"></span>
              </div>
          )}
 

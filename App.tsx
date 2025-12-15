@@ -69,7 +69,7 @@ const App: React.FC = () => {
       case ToolType.DASHBOARD:
       default:
         return (
-          <div className="p-10 max-w-5xl mx-auto">
+          <div className="p-10 max-w-5xl mx-auto animate-in fade-in slide-in-from-bottom-4 duration-500">
             <h1 className="text-4xl font-bold text-white mb-2">Welcome back, {user?.name}</h1>
             <p className="text-zinc-400 text-lg mb-10">Your all-in-one AI creative studio for business marketing.</p>
             

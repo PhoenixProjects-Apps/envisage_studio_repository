@@ -1,0 +1,8 @@
+{
+  "appId": "com.envisagestudio.app",
+  "appName": "Envisage Studio",
+  "webDir": "dist",
+  "server": {
+    "androidScheme": "https"
+  }
+}
